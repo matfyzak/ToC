@@ -8,20 +8,28 @@ POSKOZENI_MAGICKYM_RYBARENIM = 5
 
 class Vizualizace:
     def generate_html(cistota_vody, cislo_kola):
-        fish_count = cistota_vody // 2
+        fish_count = cistota_vody
         fish_html = ""
         for _ in range(fish_count):
             x = random.randint(0, 90) 
             y = random.randint(20, 90) # nechci překrýt nápis
-            mirror = random.choice([True, False]) 
+            mirror = random.choice([True, False]) # některé ryby chci obrátit
             transform = "scaleX(-1)" if mirror else "none"
-            fish_html += f'<img src="ryba.png" style="position:absolute; left:{x}%; top:{y}%; width:50px; height:50px; transform:{transform};">\n'
+
+            if cistota_vody < VYCHOZI_CISTOTA_VODY // 2:
+                if random.random() / 2 > cistota_vody / VYCHOZI_CISTOTA_VODY:
+                    fish_html += f'<img src="mutant.png" class="fish" style="position:absolute; left:{x}%; top:{y}%; width:120px; height:120px; z-index: 1; transform:{transform};">\n' # z-index posouvá monstra do popředí, šlo by dělat pomocí CSS
+            fish_html += f'<img src="ryba.png" class="fish" style="position:absolute; left:{x}%; top:{y}%; width:70px; height:70px; transform:{transform};">\n'
+
+            
 
         html_content = f"""
         <html>
+
         <head>
             <title>Vizualizace Čistoty Vody</title>
-            <meta http-equiv="refresh" content="5"> 
+            <meta http-equiv="refresh" content="2"> 
+
         </head>
         <body style="position:relative; width:100vw; height:100vh; margin:20; padding:20;">
             <h1>Čistota Vody: {cistota_vody}</h1>
@@ -176,3 +184,6 @@ def interaktivni_hra():
 
 # spustit interaktivní hru
 interaktivni_hra()
+
+# FIXME nějak implementovat staty ještě?
+# FIXME odstranit scrollování stránky
