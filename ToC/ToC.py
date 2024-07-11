@@ -1,13 +1,19 @@
 import random
 
+VYCHOZI_CISTOTA_VODY = 100
+EFEKT_CISTENI = 3
+MAX_ZISK_Z_RYBARENI = 6
+MAX_ZISK_Z_MAGICKEHO_RYBARENI = 20
+POSKOZENI_MAGICKYM_RYBARENIM = 5
+
 class Hra:
     def __init__(self, pocet_tymu):
-        self.cistota_vody = 100
+        self.cistota_vody = VYCHOZI_CISTOTA_VODY
         self.skore = {chr(65+i): 0 for i in range(pocet_tymu)}
         self.akce = {chr(65+i): None for i in range(pocet_tymu)}
         self.poradi = sorted(self.skore.keys())
-        self.index_aktualniho_tymu = 0
-
+        self.index_aktualniho_tymu = 0  
+        self.cislo_kola = 1
 
     def dalsi_tym(self):
         self.index_aktualniho_tymu = (self.index_aktualniho_tymu + 1) % len(self.skore)
@@ -40,7 +46,7 @@ class Hra:
         self.dalsi_tym()
 
     def vyhodnotit_kolo(self):
-        print("Vyhodnocení kola...")
+        print(f"\nVyhodnocení kola {self.cislo_kola}")
 
         for tym, akce in self.akce.items():
             if akce is None:
@@ -50,7 +56,7 @@ class Hra:
 
         for tym, akce in self.akce.items(): # prvně se vyhodnotí klasické rybaření, to proběhne v každém případě
             if akce[0] == 'rybaření':
-                body = random.randint(1, 6) * (vychozi_cistota_vody / 100)
+                body = random.randint(1, MAX_ZISK_Z_RYBARENI) * (vychozi_cistota_vody / VYCHOZI_CISTOTA_VODY)
                 self.skore[tym] += body
                 print(f"Tým {tym} provedl rybolov a získal {body:.2f} bodů.")
 
@@ -71,24 +77,25 @@ class Hra:
         for tym, akce in self.akce.items():
             if akce[0] == 'rybaření pomocí magie':
                 if tym not in udane_tymy: # proběhne normálně jako rybaření, akorát výhodnější
-                    body = random.randint(1, 20) * (vychozi_cistota_vody / 100)
+                    body = random.randint(1, MAX_ZISK_Z_MAGICKEHO_RYBARENI) * (vychozi_cistota_vody / VYCHOZI_CISTOTA_VODY)
                     self.skore[tym] += body
-                    self.cistota_vody = max(0, self.cistota_vody - 5)
+                    self.cistota_vody = max(0, self.cistota_vody - POSKOZENI_MAGICKYM_RYBARENIM)
                     print(f"Tým {tym} provedl úspěšně rybaření pomocí magie a získal {body:.2f} bodů.")
                 else:
                     print(f"Tým {tym} provedl neúspěšně rybařené pomocí magie.")
 
         for tym, akce in self.akce.items(): # čištění až úplně nakonec, aby se vyčistilo i to co se zašpinilo v tomto kole
             if akce[0] == 'čištění':
-                self.cistota_vody = min(100, self.cistota_vody + 3)
+                self.cistota_vody = min(VYCHOZI_CISTOTA_VODY, self.cistota_vody + EFEKT_CISTENI)
                 print(f"Tým {tym} provedl čištění.")
 
         self.akce = {chr(65+i): None for i in range(len(self.skore))} # vymažeme akce, už není potřeba si je pamatovat
 
         self.zobraz_skore()
+        self.cislo_kola += 1
 
     def zobraz_skore(self): # skóre by mělo zůstat tajné! - zobrazí se někam jen čistota vody!
-        print("Průběžné skóre:")
+        print("\nPrůběžné skóre:")
         for tym, skore in self.skore.items():
             print(f"Tým {tym}: {skore:.2f} bodů")
         print(f"Čistota vody: {self.cistota_vody}")     
