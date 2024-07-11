@@ -11,8 +11,8 @@ class Vizualizace:
         fish_count = cistota_vody
         fish_html = ""
         for _ in range(fish_count):
-            x = random.randint(0, 90) 
-            y = random.randint(20, 90) # nechci překrýt nápis
+            x = random.randint(5, 95) 
+            y = random.randint(20, 85) # nechci překrýt nápis
             mirror = random.choice([True, False]) # některé ryby chci obrátit
             transform = "scaleX(-1)" if mirror else "none"
 
@@ -24,7 +24,7 @@ class Vizualizace:
             
 
         html_content = f"""
-        <html>
+        <html style="max-width: 100%; max-height: 100%; overflow-x: hidden;">
 
         <head>
             <title>Vizualizace Čistoty Vody</title>
