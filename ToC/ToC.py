@@ -6,6 +6,34 @@ MAX_ZISK_Z_RYBARENI = 6
 MAX_ZISK_Z_MAGICKEHO_RYBARENI = 20
 POSKOZENI_MAGICKYM_RYBARENIM = 5
 
+class Vizualizace:
+    def generate_html(cistota_vody, cislo_kola):
+        fish_count = cistota_vody // 2
+        fish_html = ""
+        for _ in range(fish_count):
+            x = random.randint(0, 90) 
+            y = random.randint(20, 90) # nechci překrýt nápis
+            mirror = random.choice([True, False]) 
+            transform = "scaleX(-1)" if mirror else "none"
+            fish_html += f'<img src="ryba.png" style="position:absolute; left:{x}%; top:{y}%; width:50px; height:50px; transform:{transform};">\n'
+
+        html_content = f"""
+        <html>
+        <head>
+            <title>Vizualizace Čistoty Vody</title>
+            <meta http-equiv="refresh" content="5"> 
+        </head>
+        <body style="position:relative; width:100vw; height:100vh; margin:20; padding:20;">
+            <h1>Čistota Vody: {cistota_vody}</h1>
+            <h1>Číslo kola: {cislo_kola}</h1>
+            {fish_html}
+        </body>
+        </html>
+        """
+
+        with open("index.html", "w") as file:
+            file.write(html_content)
+
 class Hra:
     def __init__(self, pocet_tymu):
         self.cistota_vody = VYCHOZI_CISTOTA_VODY
@@ -91,6 +119,7 @@ class Hra:
 
         self.akce = {chr(65+i): None for i in range(len(self.skore))} # vymažeme akce, už není potřeba si je pamatovat
 
+        Vizualizace.generate_html(self.cistota_vody, self.cislo_kola)
         self.zobraz_skore()
         self.cislo_kola += 1
 
@@ -143,7 +172,6 @@ def interaktivni_hra():
         else:
             print("Neplatná akce. Zkuste to znovu.")
             continue
-
 
 
 # spustit interaktivní hru
