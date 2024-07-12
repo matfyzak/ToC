@@ -24,7 +24,7 @@ class Vizualizace:
             else:
                  fish_html += f'<img src="ryba.png" class="fish" style="position:absolute; left:{x}%; top:{y}%; width:70px; height:70px; transform:{transform};">\n'
 
-        surface_html = '<img src="surface.png" class="water-level" style="position: absolute; top: 7%; left: 0; width: 100%; height: auto; z-index: -1;">'
+        surface_html = '<img src="water.png" class="water-level" style="position: absolute; top: 0%; left: 0; width: 100%; height: auto; z-index: -1;">'
 
         html_content = f"""
         <html style="max-width: 100%; max-height: 100%; overflow-x: hidden;">
