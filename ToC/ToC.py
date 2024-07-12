@@ -99,7 +99,7 @@ class Hra:
         for tym, akce in self.akce.items(): # akce už jsou dané, jinak by se nevyhodnocovalo kolo
             if akce[0] == 'špionáž':
                 cil = akce[1]
-                posledni_akce = self.akce[cil][0]
+                posledni_akce = self.akce[cil][0] # jinak nehezký formát
                 print(f"Tým {tym} špehoval tým {cil} a zjistil, že tým {cil} provedl akci: {posledni_akce}.")
 
         udane_tymy = [] 
@@ -151,7 +151,7 @@ def interaktivni_hra():
         print(f"\nNa řadě je tým {aktualni_tym}.")
         print("Vyberte akci:")
         print("1. Rybolov")
-        print("2. Průmyslový rybolov")
+        print("2. Rybolov pomocí magie")
         print("3. Čištění")
         print("4. Špionáž")
         print("5. Udání")
