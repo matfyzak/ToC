@@ -10,7 +10,7 @@ class Vizualizace:
     def generate_html(cistota_vody, cislo_kola):
         fish_count = cistota_vody
         fish_html = ""
-        for _ in range(fish_count):
+        for _ in range(fish_count*2):
             x = random.randint(5, 95) 
             y = random.randint(20, 85) # nechci překrýt nápis
             mirror = random.choice([True, False]) # některé ryby chci obrátit
@@ -34,8 +34,8 @@ class Vizualizace:
             <meta http-equiv="refresh" content="2"> 
 
         </head>
-        <body style="position:relative; width:100vw; height:100vh; margin:20; padding:20;">
-            <h1>Čistota Vody: {cistota_vody}</h1>
+        <body style="position:relative; width:100vw; height:100vh; margin:30; padding:20;">
+            <h1>Čistota vody: {cistota_vody}</h1>
             <h1>Číslo kola: {cislo_kola}</h1>
             {fish_html}
         </body>
@@ -194,3 +194,4 @@ interaktivni_hra()
 
 # FIXME nějak implementovat staty ještě?
 # FIXME odstranit scrollování stránky
+# FIXME nějaká hezčí grafika - kouzelník, rybář, rybník atd.
