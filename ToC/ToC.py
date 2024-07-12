@@ -11,7 +11,7 @@ class Vizualizace:
         fish_count = cistota_vody
         fish_html = ""
         for _ in range(fish_count*2):
-            x = random.randint(5, 95) 
+            x = random.randint(3, 90) 
             y = random.randint(20, 85) # nechci překrýt nápis
             mirror = random.choice([True, False]) # některé ryby chci obrátit
             transform = "scaleX(-1)" if mirror else "none"
@@ -24,20 +24,21 @@ class Vizualizace:
             else:
                  fish_html += f'<img src="ryba.png" class="fish" style="position:absolute; left:{x}%; top:{y}%; width:70px; height:70px; transform:{transform};">\n'
 
-            
+        surface_html = '<img src="surface.png" class="water-level" style="position: absolute; top: 7%; left: 0; width: 100%; height: auto; z-index: -1;">'
 
         html_content = f"""
         <html style="max-width: 100%; max-height: 100%; overflow-x: hidden;">
 
         <head>
             <title>Vizualizace Čistoty Vody</title>
-            <meta http-equiv="refresh" content="2"> 
+            <meta http-equiv="refresh" content="10"> 
 
         </head>
         <body style="position:relative; width:100vw; height:100vh; margin:30; padding:20;">
             <h1>Čistota vody: {cistota_vody}</h1>
             <h1>Číslo kola: {cislo_kola}</h1>
-            {fish_html}
+            {surface_html}
+            {fish_html}              
         </body>
         </html>
         """
