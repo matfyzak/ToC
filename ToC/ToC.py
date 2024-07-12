@@ -19,7 +19,10 @@ class Vizualizace:
             if cistota_vody < VYCHOZI_CISTOTA_VODY // 2:
                 if random.random() / 2 > cistota_vody / VYCHOZI_CISTOTA_VODY:
                     fish_html += f'<img src="mutant.png" class="fish" style="position:absolute; left:{x}%; top:{y}%; width:120px; height:120px; z-index: 1; transform:{transform};">\n' # z-index posouvá monstra do popředí, šlo by dělat pomocí CSS
-            fish_html += f'<img src="ryba.png" class="fish" style="position:absolute; left:{x}%; top:{y}%; width:70px; height:70px; transform:{transform};">\n'
+                else:
+                    fish_html += f'<img src="ryba.png" class="fish" style="position:absolute; left:{x}%; top:{y}%; width:70px; height:70px; transform:{transform};">\n'
+            else:
+                 fish_html += f'<img src="ryba.png" class="fish" style="position:absolute; left:{x}%; top:{y}%; width:70px; height:70px; transform:{transform};">\n'
 
             
 
