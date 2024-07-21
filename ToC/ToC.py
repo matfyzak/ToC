@@ -5,6 +5,7 @@ EFEKT_CISTENI = 3
 MAX_ZISK_Z_RYBARENI = 6
 MAX_ZISK_Z_MAGICKEHO_RYBARENI = 20
 POSKOZENI_MAGICKYM_RYBARENIM = 5
+POSTIH_ZA_MAGICKE_RYBARENI = 3
 
 class Vizualizace:
     def generate_html(cistota_vody, cislo_kola):
@@ -80,9 +81,14 @@ class Hra:
         print(f"Tým {tym} plánuje špehovat tým {cil}.")
         self.dalsi_tym()
 
-    def udani(self, tym, cil):
+    def udani(self, tym, cil):  # nemělo by se používat!
         self.akce[tym] = ('udání', cil)
         print(f"Tým {tym} plánuje udat tým {cil}.")
+        self.dalsi_tym()
+
+    def kontrola(self, tym):
+        self.akce[tym] = ('kontrola',)
+        print(f"Tým plánuje iniciovat kontrolu.")
         self.dalsi_tym()
 
     def vyhodnotit_kolo(self):
@@ -106,23 +112,26 @@ class Hra:
                 posledni_akce = self.akce[cil][0] # jinak nehezký formát
                 print(f"Tým {tym} špehoval tým {cil} a zjistil, že tým {cil} provedl akci: {posledni_akce}.")
 
-        udane_tymy = [] 
+        probehla_kontrola = False
+        #udane_tymy = [] 
 
         for tym, akce in self.akce.items(): # akce už jsou dané, jinak by se nevyhodnocovalo kolo
-            if akce[0] == 'udání':
-                cil = akce[1]
-                udane_tymy.append(cil)
-                print(f"Tým {tym} udal tým {cil}.")
+            if akce[0] == 'kontrola':
+                probehla_kontrola = True
+                #cil = akce[1]
+                #udane_tymy.append(cil)
+                print(f"Tým {tym} inicioval kontrolu.")
 
         for tym, akce in self.akce.items():
             if akce[0] == 'rybaření pomocí magie':
-                if tym not in udane_tymy: # proběhne normálně jako rybaření, akorát výhodnější
+                if probehla_kontrola is False: # proběhne normálně jako rybaření, akorát výhodnější
                     body = random.randint(1, MAX_ZISK_Z_MAGICKEHO_RYBARENI) * (vychozi_cistota_vody / VYCHOZI_CISTOTA_VODY)
                     self.skore[tym] += body
                     self.cistota_vody = max(0, self.cistota_vody - POSKOZENI_MAGICKYM_RYBARENIM)
                     print(f"Tým {tym} provedl úspěšně rybaření pomocí magie a získal {body:.2f} bodů.")
                 else:
-                    print(f"Tým {tym} provedl neúspěšně rybařené pomocí magie.")
+                    self.skore[tym] -= POSTIH_ZA_MAGICKE_RYBARENI
+                    print(f"Tým {tym} provedl neúspěšně rybařené pomocí magie a ztartil {POSTIH_ZA_MAGICKE_RYBARENI} body.") 
 
         for tym, akce in self.akce.items(): # čištění až úplně nakonec, aby se vyčistilo i to co se zašpinilo v tomto kole
             if akce[0] == 'čištění':
@@ -158,7 +167,8 @@ def interaktivni_hra():
         print("2. Rybolov pomocí magie")
         print("3. Čištění")
         print("4. Špionáž")
-        print("5. Udání")
+        #print("5. Udání")
+        print("5. Kontrola")
         
         akce = input("Zadejte číslo akce: ")
         
@@ -178,13 +188,13 @@ def interaktivni_hra():
                     print("Neplatný tým. Zadejte platný tým.")
             hra.spionaz(aktualni_tym, cil)
         elif akce == '5':
-            while True:
-                cil = input("Zadejte tým, který chcete udat: ")
-                if cil in hra.skore:
-                    break
-                else:
-                    print("Neplatný tým. Zadejte platný tým.")
-            hra.udani(aktualni_tym, cil)
+            #while True:
+            #    cil = input("Zadejte tým, který chcete udat: ")
+            #    if cil in hra.skore:
+            #        break
+            #    else:
+            #        print("Neplatný tým. Zadejte platný tým.")
+            hra.kontrola(aktualni_tym)
         else:
             print("Neplatná akce. Zkuste to znovu.")
             continue
@@ -195,4 +205,4 @@ interaktivni_hra()
 
 # FIXME nějak implementovat staty ještě?
 # FIXME odstranit scrollování stránky
-# FIXME nějaká hezčí grafika - kouzelník, rybář, rybník atd.
+# FIXME nějaká hezčí grafika - kouzelník, rybář, rybník atd. - nakreslit vodu v LOD
