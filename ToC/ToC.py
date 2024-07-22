@@ -131,7 +131,7 @@ class Hra:
                     print(f"Tým {tym} provedl úspěšně rybaření pomocí magie a získal {body:.2f} bodů.")
                 else:
                     self.skore[tym] -= POSTIH_ZA_MAGICKE_RYBARENI
-                    print(f"Tým {tym} provedl neúspěšně rybařené pomocí magie a ztartil {POSTIH_ZA_MAGICKE_RYBARENI} body.") 
+                    print(f"Tým {tym} provedl neúspěšně rybařené pomocí magie a ztratil {POSTIH_ZA_MAGICKE_RYBARENI} body.") 
 
         for tym, akce in self.akce.items(): # čištění až úplně nakonec, aby se vyčistilo i to co se zašpinilo v tomto kole
             if akce[0] == 'čištění':
